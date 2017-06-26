@@ -3,6 +3,7 @@
 #include <queue>
 #include <random>
 #include <time.h>
+#include "random.h"
 
 using namespace std;
 
@@ -10,9 +11,14 @@ using namespace std;
 // Global
 // =============================================================================
 
-const int N_PATHS  = 2;
-const int N_LEVELS = 2;
-const int N_CLOCKS = 20;
+//const int N_PATHS  = 2;
+//const int N_LEVELS = 2;
+//const int N_CLOCKS = 20;
+
+int N_PATHS;
+int N_LEVELS;
+int N_CLOCKS;
+
 
 // =============================================================================
 // !!! Multi Paths Data
@@ -53,42 +59,6 @@ struct PathData { //initial distribution (what everyone needs to know/can read)
 
 vector<PathData> multi_paths_data; //all data is in here
 
-// =============================================================================
-// Random Number Generator
-// =============================================================================
-
-/// A random number generator.
-class RandomState {
-
-public:
-    // Create and initialize random number generator with the current system time
-    RandomState() : eng(static_cast<unsigned long>(time(nullptr))) { }
-
-    // Create and initialize random number generator with a seed
-    RandomState(unsigned long seed) : eng(seed) { }
-
-//change to Gaussian distribution
-    // Provide a double random number from a uniform distribution between [low, high).
-    double uniform_real(double low, double high) {
-        uniform_real_distribution<double> dist(low, high);
-        return dist(RandomState::eng);
-    }
-
-    // Provide a long random number from a uniform distribution between [low, high).
-    long uniform_int(long low, long high) {
-        uniform_int_distribution<long> dist(low, high-1);
-        return dist(RandomState::eng);
-    }
-
-    // !!! Other distributions, like gaussian and poisson, are defined and can be used here.
-
-    // Upper bound for long random numbers [..., high).
-    long MAX_INT = numeric_limits<long>::max();
-
-protected:
-    // Mersenne twister
-    mt19937 eng;
-};
 
 // =============================================================================
 // Path Processing Queue (FIFO)
@@ -137,7 +107,7 @@ void process_path(PathInfo& path_info) { //& - reference
     long clock = path_info.clock;
     while (clock < N_CLOCKS) {
         double r = path_info.random_state.uniform_real(0.0, 1.0);
-        cout << "clock: " << clock << " random number: " << r << endl;
+        cout << "clock: " << clock << " random number: " << r << en4dl;
         clock++;
         if (r > 0.95) break;
     }
@@ -193,6 +163,9 @@ void process_path(PathInfo& path_info) { //& - reference
 int main() {
 
     // !!! INPUT
+    cout << "Input system parameters:" << endl;
+    cout << "Number of Paths, Number of Levels, Timestep" << endl;
+    cin >> N_PATHS >> N_LEVELS >> N_CLOCKS;
 
     // Random Number Generator
     unsigned long seed = 0; // fixed seed for reproducibility, otherwise use RandomState()
