@@ -3,5 +3,5 @@ project(MultiPathProcessing)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp MultiPathProcessing.cpp)
 add_executable(MultiPathProcessing ${SOURCE_FILES})
